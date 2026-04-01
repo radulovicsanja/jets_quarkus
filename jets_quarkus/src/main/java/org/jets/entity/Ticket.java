@@ -1,45 +1,56 @@
 package org.jets.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Ticket {
 
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long passengerId; // ID putnika koji je kupio kartu
+    @ManyToOne
+    @JoinColumn(name = "passengerid")
+    private Passenger passenger; //karta pripada jednom putniku
 
-    private Long flightId; // ID leta na koji se karta odnosi
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flightid")
+    private Flight flight; //karta pripada jednom letu
 
-    private double price; // cijena karte
+    @OneToOne
+    @JoinColumn(name = "seatid")
+    @JsonIgnore
+    private Seat seat;
 
-    private LocalDateTime reservationDate; // datum rezervacije
+
+
+
+    @JsonIgnore
+    private double price;
+@JsonIgnore
+    private LocalDateTime reservationDate;
+
 
     public Ticket() {}
 
-    public Ticket(Long passengerId, Long flightId, double price, LocalDateTime reservationDate) {
-        this.passengerId = passengerId;
-        this.flightId = flightId;
+    public Ticket(Passenger passenger, Flight flight, Seat seat, double price, LocalDateTime reservationDate) {
+        this.passenger = passenger;
+        this.flight = flight;
+        this.seat = seat;
         this.price = price;
         this.reservationDate = reservationDate;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public Long getPassengerId() { return passengerId; }
-    public void setPassengerId(Long passengerId) { this.passengerId = passengerId; }
 
-    public Long getFlightId() { return flightId; }
-    public void setFlightId(Long flightId) { this.flightId = flightId; }
-
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
-
-    public LocalDateTime getReservationDate() { return reservationDate; }
-    public void setReservationDate(LocalDateTime reservationDate) { this.reservationDate = reservationDate; }
 }

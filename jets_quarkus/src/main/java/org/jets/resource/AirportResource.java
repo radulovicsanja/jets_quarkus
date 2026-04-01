@@ -17,10 +17,13 @@ public class AirportResource {
     private AirportService airportService;
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/addAirport")
-    public String addAirport(Airport airport) {
-        airportService.createAirport(airport);
-        return "Airport added successfully";
+    public Response addAirport(Airport airport) {
+        System.out.println("Airport object received: " + airport);
+        Airport savedAirport = airportService.createAirport(airport);
+        return Response.ok(savedAirport).build();
     }
 
     @GET

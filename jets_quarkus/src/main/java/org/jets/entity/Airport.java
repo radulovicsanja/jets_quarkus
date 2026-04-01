@@ -1,9 +1,13 @@
 package org.jets.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import java.util.ArrayList;
+import lombok.Getter;
+import lombok.Setter;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @NamedQuery(
         name = Airport.GET_ALL_AIRPORTS,
@@ -17,16 +21,24 @@ public class Airport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("city")
     private String city;
+
+    @JsonProperty("country")
     private String country;
+
+    @JsonProperty("code")
     private String code; // npr. TGD, BEG, LHR
 
-    @OneToMany(mappedBy = "departureAirport", cascade = CascadeType.ALL)
-    private List<Flight> flights = new ArrayList<>();
+    @OneToMany(mappedBy = "departureAirport", fetch = FetchType.LAZY)
+    private List<Flight> departureFlights;
 
-    public Airport() {
-    }
+    @OneToMany(mappedBy = "arrivalAirport", fetch = FetchType.LAZY)
+    private List<Flight> arrivalFlights;
+
 
     public Airport(String name, String city, String country, String code) {
         this.name = name;
@@ -35,32 +47,17 @@ public class Airport {
         this.code = code;
     }
 
-    // Getteri i setteri
-    public Long getId() { return id; }
+    public Airport() {
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getCity() { return city; }
-    public void setCity(String city) { this.city = city; }
-
-    public String getCountry() { return country; }
-    public void setCountry(String country) { this.country = country; }
-
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
-
-    public List<Flight> getFlights() { return flights; }
-    public void setFlights(List<Flight> flights) { this.flights = flights; }
-
-    // Pomoćne metode za dodavanje/uklanjanje letova
-    public void addFlight(Flight flight) {
-        flights.add(flight);
-        flight.setDepartureAirport(this);
     }
 
-    public void removeFlight(Flight flight) {
-        flights.remove(flight);
-        flight.setDepartureAirport(null);
+    @Override
+    public String toString() {
+        return "Airport{" +
+                "name='" + name + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", code='" + code + '\'' +
+                '}';
     }
 }

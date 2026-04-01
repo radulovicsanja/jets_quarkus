@@ -1,32 +1,36 @@
 package org.jets.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-// Passenger -> Ticket (manyToMany)
-//Passenger -> Flight (manyToMany)
+@Getter
+@Setter
 @Entity
 public class Passenger {
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    @JsonIgnore
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String firstName;
-
     private String lastName;
-
     private String passportNumber;
 
-    private List<Ticket> tickets;
+   // Veze:
+    @JsonIgnore
+    @OneToMany(mappedBy = "passenger", fetch = FetchType.LAZY)
+    private List<Ticket> tickets; //putnik moze imati vise karata
 
-    private List<Flight> flights;
+    public Passenger() {}
+
+
+    @Override
+    public String toString() {
+        return "FirstName: " + firstName + ", LastName: " + lastName + ", PassportNumber: " + passportNumber;
+    }
 }

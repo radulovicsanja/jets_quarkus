@@ -1,21 +1,20 @@
 package org.jets.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 public class Seat {
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
+
     private String seatNumber;     // npr. 12A
 
     private String seatClass;      // economy, business
@@ -23,4 +22,15 @@ public class Seat {
     private String seatPosition;   // window, middle, aisle
 
     private boolean reserved;
+
+    @ManyToOne
+    @JoinColumn(name = "flightid")
+    private Flight flight;
+
+    // Veza:
+    @OneToOne(mappedBy = "seat", fetch = FetchType.LAZY)
+    private Ticket ticket;
+
+
+    public Seat() {}
 }
