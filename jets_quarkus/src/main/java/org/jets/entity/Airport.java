@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -39,6 +41,9 @@ public class Airport {
     @OneToMany(mappedBy = "arrivalAirport", fetch = FetchType.LAZY)
     private List<Flight> arrivalFlights;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<TimeResponse> timeResponses = new ArrayList<>();
+
 
     public Airport(String name, String city, String country, String code) {
         this.name = name;
@@ -60,4 +65,10 @@ public class Airport {
                 ", code='" + code + '\'' +
                 '}';
     }
+
+    public List<TimeResponse> getTimeResponses() {
+        return timeResponses;
+    }
+
+
 }
