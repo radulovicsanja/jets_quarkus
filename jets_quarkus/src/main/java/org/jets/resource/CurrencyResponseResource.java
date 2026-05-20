@@ -1,5 +1,6 @@
 package org.jets.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -29,12 +30,12 @@ public class CurrencyResponseResource {
     }
 
     @GET
-    @Path("/{airportId}/{from}/{to}/{value}")
     @Transactional
+    @RolesAllowed("admin")
     public Response convert(
             @QueryParam("airportId") Long airportId,
-            @QueryParam("from") String from,
-            @QueryParam("to") String to,
+            @QueryParam("fromCurrency") String from,
+            @QueryParam("toCurrency") String to,
             @QueryParam("value") double value
     ) {
 
@@ -56,7 +57,7 @@ public class CurrencyResponseResource {
         airport.getCurrencyResponses().add(currencyResponses);
 
         // cuvanje
-        em.merge(currencyResponses);
+        em.merge(airport);
 
         return Response.ok(currencyResponses).build();
     }

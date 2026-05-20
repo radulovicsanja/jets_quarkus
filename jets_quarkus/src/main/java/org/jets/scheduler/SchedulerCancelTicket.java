@@ -21,7 +21,7 @@ public class SchedulerCancelTicket {
      * Scheduler koji se pokreće svakih 10 minuta
      * i blokira rezervaciju karata 2h prije polijetanja
      */
-    @Scheduled(every = "10s")
+    @Scheduled(every = "30m")
     @Transactional
     public void blockTicketsTwoHoursBefore() {
         LocalDateTime now = LocalDateTime.now();

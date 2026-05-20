@@ -15,8 +15,8 @@ public class CurrencyResponse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String from;
-    private String to;
+    private String fromCurrency;
+    private String toCurrency;
     private double rate;
 
     private double value;
@@ -24,10 +24,10 @@ public class CurrencyResponse {
 
     public CurrencyResponse() {}
 
-    public CurrencyResponse(Long id, String from, String to, double rate, double value, double convertedValue) {
+    public CurrencyResponse(Long id, String fromCurrency, String toCurrency, double rate, double value, double convertedValue) {
         this.id = id;
-        this.from = from;
-        this.to = to;
+        this.fromCurrency = fromCurrency;
+        this.toCurrency = toCurrency;
         this.rate = rate;
         this.value = value;
         this.convertedValue = convertedValue;
@@ -41,20 +41,20 @@ public class CurrencyResponse {
         this.id = id;
     }
 
-    public String getFrom() {
-        return from;
+    public String getFromCurrency() {
+        return fromCurrency;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setFromCurrency(String fromCurrency) {
+        this.fromCurrency = fromCurrency;
     }
 
-    public String getTo() {
-        return to;
+    public String getToCurrency() {
+        return toCurrency;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setToCurrency(String toCurrency) {
+        this.toCurrency = toCurrency;
     }
 
     public double getRate() {
@@ -86,8 +86,8 @@ public class CurrencyResponse {
     public String toString() {
         return "CurrencyResponse{" +
                 "id=" + id +
-                ", from='" + from + '\'' +
-                ", to='" + to + '\'' +
+                ", from='" + fromCurrency + '\'' +
+                ", to='" + toCurrency + '\'' +
                 ", rate=" + rate +
                 ", value=" + value +
                 ", convertedValue=" + convertedValue +
@@ -98,11 +98,12 @@ public class CurrencyResponse {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         CurrencyResponse that = (CurrencyResponse) o;
-        return Double.compare(rate, that.rate) == 0 && Double.compare(value, that.value) == 0 && Double.compare(convertedValue, that.convertedValue) == 0 && Objects.equals(id, that.id) && Objects.equals(from, that.from) && Objects.equals(to, that.to);
+        return Double.compare(rate, that.rate) == 0 && Double.compare(value, that.value) == 0 && Double.compare(convertedValue, that.convertedValue) == 0 && Objects.equals(id, that.id) && Objects.equals(fromCurrency, that.fromCurrency)
+                && Objects.equals(toCurrency, that.toCurrency);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, from, to, rate, value, convertedValue);
+        return Objects.hash(id, fromCurrency, toCurrency, rate, value, convertedValue);
     }
 }
